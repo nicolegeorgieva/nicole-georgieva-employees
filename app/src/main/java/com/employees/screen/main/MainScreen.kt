@@ -1,12 +1,14 @@
 package com.employees.screen.main
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.employees.MainActivity
 
@@ -23,16 +25,31 @@ private fun UI(
     state: MainState,
     onEvent: (MainEvent) -> Unit
 ) {
-    Column() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+    ) {
         val mainActivity = LocalContext.current as MainActivity
+
+        Text(text = "Welcome to Employees!")
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         Button(onClick = {
             mainActivity.fileChooser {
                 onEvent(MainEvent.FilePicked(file = it))
             }
         }) {
-            Text(text = "Pick")
+            Text(text = "Export CSV*")
         }
+
+        Text(
+            text = "* to see pair of employees who have worked together for the" +
+                    " longest period of time"
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(text = "${state.fileContent}")
     }
