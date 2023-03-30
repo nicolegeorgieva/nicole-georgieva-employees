@@ -2,6 +2,7 @@ package com.employees.domain
 
 import com.file.Employee
 import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 val csv = """
     EmpID, ProjectID, DateFrom, DateTo
@@ -30,11 +31,15 @@ fun parseRow(row: String): Employee? {
     val empId = splittedArr[0].toIntOrNull() ?: return null
     val projectId = splittedArr[1].toIntOrNull() ?: return null
     val dateFrom = parseDate(splittedArr[2]) ?: return null
-    val dateTo = parseDate(splittedArr[3]) ?: return null
+    val dateTo = parseDate(splittedArr[3]) ?: LocalDate.now()
 
     return Employee(empId, projectId, dateFrom, dateTo)
 }
 
 fun parseDate(date: String): LocalDate? {
-    return LocalDate.now()
+    return try {
+        LocalDate.parse(date)
+    } catch (e: DateTimeParseException) {
+        null
+    }
 }
