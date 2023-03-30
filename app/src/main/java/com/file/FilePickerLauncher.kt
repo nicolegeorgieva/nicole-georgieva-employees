@@ -11,7 +11,7 @@ class FilePickerLauncher @Inject constructor(
         Intent.ACTION_OPEN_DOCUMENT
     ).apply {
         addCategory(Intent.CATEGORY_OPENABLE)
-        type = "application/csv"
+        type = "*/*"
     }
 
     override fun onActivityResult(resultCode: Int, intent: Intent?): Uri? = intent?.data

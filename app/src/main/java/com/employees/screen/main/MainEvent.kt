@@ -1,5 +1,7 @@
 package com.employees.screen.main
 
-sealed interface MainEvent {
+import android.net.Uri
 
+sealed interface MainEvent {
+    data class FilePicked(val file: Uri) : MainEvent
 }
