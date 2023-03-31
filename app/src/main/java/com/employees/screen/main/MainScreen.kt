@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.employees.MainActivity
+import com.employees.domain.data.EmployeesPair
 
 @Composable
 fun MainScreen() {
@@ -76,48 +77,7 @@ private fun UI(
 
         item(key = "result") {
             if (state.result != null) {
-                Divider(
-                    modifier = Modifier.fillMaxWidth(),
-                    thickness = 0.5.dp,
-                    color = MaterialTheme.colorScheme.outline
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #1")
-                    GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #2")
-                    GridTitle(modifier = Modifier.weight(1f), label = "Project ID")
-                    GridTitle(modifier = Modifier.weight(1f), label = "Days worked")
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Divider(
-                    modifier = Modifier.fillMaxWidth(),
-                    thickness = 0.5.dp,
-                    color = MaterialTheme.colorScheme.outline
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    ResultText(modifier = Modifier.weight(1f), value = state.result.employee1.empId)
-                    ResultText(modifier = Modifier.weight(1f), value = state.result.employee2.empId)
-                    ResultText(modifier = Modifier.weight(1f), value = state.result.projectId)
-                    ResultText(
-                        modifier = Modifier.weight(1f),
-                        value = state.result.overlappingDays.toInt()
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Divider(
-                    modifier = Modifier.fillMaxWidth(),
-                    thickness = 0.5.dp,
-                    color = MaterialTheme.colorScheme.outline
-                )
+                ResultGrid(result = state.result)
             } else if (state.fileImported) {
                 Text(
                     text = "There isn't a result matching the criteria.",
@@ -128,6 +88,52 @@ private fun UI(
             }
         }
     }
+}
+
+@Composable
+fun ResultGrid(result: EmployeesPair) {
+    Divider(
+        modifier = Modifier.fillMaxWidth(),
+        thickness = 0.5.dp,
+        color = MaterialTheme.colorScheme.outline
+    )
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #1")
+        GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #2")
+        GridTitle(modifier = Modifier.weight(1f), label = "Project ID")
+        GridTitle(modifier = Modifier.weight(1f), label = "Days worked")
+    }
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Divider(
+        modifier = Modifier.fillMaxWidth(),
+        thickness = 0.5.dp,
+        color = MaterialTheme.colorScheme.outline
+    )
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        ResultText(modifier = Modifier.weight(1f), value = result.employee1.empId)
+        ResultText(modifier = Modifier.weight(1f), value = result.employee2.empId)
+        ResultText(modifier = Modifier.weight(1f), value = result.projectId)
+        ResultText(
+            modifier = Modifier.weight(1f),
+            value = result.overlappingDays.toInt()
+        )
+    }
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Divider(
+        modifier = Modifier.fillMaxWidth(),
+        thickness = 0.5.dp,
+        color = MaterialTheme.colorScheme.outline
+    )
 }
 
 @Composable
