@@ -37,7 +37,7 @@ class MainViewModel @Inject constructor(
 
                 val employeesPair = longestWorkingPair(fileString ?: "")
 
-                result.value = "Result: ${formatResult(employeesPair)}"
+                result.value = formatResult(employeesPair)
             }
         }
     }
