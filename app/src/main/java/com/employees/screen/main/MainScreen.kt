@@ -44,6 +44,8 @@ private fun UI(
             Text(text = "Export CSV*")
         }
 
+        Spacer(modifier = Modifier.height(24.dp))
+
         Text(
             text = "* to see pair of employees who have worked together for the" +
                     " longest period of time"
@@ -52,5 +54,7 @@ private fun UI(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(text = "${state.fileContent}")
+
+        Text(text = "${state.result}")
     }
 }
