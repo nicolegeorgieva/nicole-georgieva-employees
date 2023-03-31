@@ -53,8 +53,6 @@ private fun UI(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(text = "${state.fileContent}")
-
         Text(text = "${state.result}")
     }
 }
