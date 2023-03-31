@@ -1,6 +1,7 @@
 package com.employees.domain
 
 import com.file.Employee
+import java.time.Duration
 
 /**
  * Returns a map of project ids to employees that are assigned to that project.
@@ -18,3 +19,69 @@ fun findEmployeesWithSameProjectId(employees: List<Employee?>): Map<Int, List<Em
 fun employeesWithSameProjectId(fileContent: String): Map<Int, List<Employee>> {
     return findEmployeesWithSameProjectId(parseCsv(fileContent))
 }
+
+/**
+ * Returns a map of project ids to employees that are assigned to that project and have overlapping time.
+ * Only projects with more than one employee are included.
+ */
+fun employeesWithSameProjectAndTime(fileContent: String): Map<Int, List<Employee>> {
+    return filterEmployeesWithSameTime(employeesWithSameProjectId(fileContent))
+}
+
+/**
+ * Returns a map of project ids to employees that have overlapping time.
+ * Only projects with more than one employee are included.
+ */
+fun filterEmployeesWithSameTime(employees: Map<Int, List<Employee>>): Map<Int, List<Employee>> {
+    return employees.mapValues { (_, employeesList) ->
+        employeesList.filter { employee1 ->
+            employeesList.any { employee2 ->
+                employee1 != employee2 && employee1.dateFrom <= employee2.dateTo &&
+                        employee1.dateTo >= employee2.dateFrom
+            }
+        }
+    }.filterValues { it.isNotEmpty() }
+}
+
+data class EmployeePair(val employee1: Employee, val employee2: Employee, val overlappingDays: Long)
+
+/**
+ * Returns the pair of employees that have worked on the same project for the longest time.
+ * If there are multiple pairs with the same longest time, return any of them.
+ * If there are no employees with overlapping time, return null.
+ */
+fun longestWorkingPair(fileContent: String): EmployeePair? {
+    val sameProjectAndTimeEmployees = employeesWithSameProjectAndTime(fileContent)
+    var maxOverlap: Long = 0
+    var longestPair: EmployeePair? = null
+
+    for ((_, employees) in sameProjectAndTimeEmployees) {
+        for (i in employees.indices) {
+            for (j in i + 1 until employees.size) {
+                val overlap = overlappingDays(employees[i], employees[j])
+                if (overlap > maxOverlap) {
+                    maxOverlap = overlap
+                    longestPair = EmployeePair(employees[i], employees[j], maxOverlap)
+                }
+            }
+        }
+    }
+
+    return longestPair
+}
+
+/**
+ * Returns the number of days that the two employees have worked on the same project.
+ * If the employees have no overlapping time, return 0.
+ */
+fun overlappingDays(emp1: Employee, emp2: Employee): Long {
+    val start = maxOf(emp1.dateFrom, emp2.dateFrom)
+    val end = minOf(emp1.dateTo, emp2.dateTo)
+
+    return if (start.isBefore(end) || start.isEqual(end)) {
+        Duration.between(start.atStartOfDay(), end.atStartOfDay()).toDays()
+    } else {
+        0
+    }
+}
+

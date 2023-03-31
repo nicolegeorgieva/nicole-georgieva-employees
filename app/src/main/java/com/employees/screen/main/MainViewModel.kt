@@ -3,7 +3,7 @@ package com.employees.screen.main
 import android.annotation.SuppressLint
 import android.content.Context
 import com.employees.base.FlowViewModel
-import com.employees.domain.employeesWithSameProjectId
+import com.employees.domain.longestWorkingPair
 import com.file.readFile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -38,10 +38,11 @@ class MainViewModel @Inject constructor(
     override suspend fun handleEvent(event: MainEvent) {
         when (event) {
             is MainEvent.FilePicked -> {
-                fileContent.value = readFile(context, event.file)
-                result.value = "Result: ${employeesWithSameProjectId(fileContent.value ?: "")}"
+                val fileString = readFile(context, event.file)
+
+                fileContent.value = fileString
+                result.value = "Result: ${longestWorkingPair(fileString ?: "")}"
             }
-            else -> {}
         }
     }
 }
