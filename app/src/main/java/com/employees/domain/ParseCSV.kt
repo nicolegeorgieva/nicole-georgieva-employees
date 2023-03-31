@@ -11,12 +11,12 @@ val csv = """
     143, 10, 2009-01-01, 2011-04-27
 """.trimIndent()
 
+val listOfEmployees = extractCsvRows(csv).map {
+    parseRow(it)
+}
+
 fun main() {
-    println(
-        extractCsvRows(csv).map {
-            parseRow(it)
-        }
-    )
+    println(listOfEmployees)
 }
 
 fun extractCsvRows(csv: String): List<String> {
@@ -43,3 +43,4 @@ fun parseDate(date: String): LocalDate? {
         null
     }
 }
+
