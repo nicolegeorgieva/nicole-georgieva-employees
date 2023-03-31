@@ -1,6 +1,7 @@
 package com.employees.domain
 
-import com.file.Employee
+import com.employees.domain.data.Employee
+import com.employees.domain.data.EmployeesPair
 import java.time.Duration
 
 /**
@@ -42,13 +43,6 @@ fun filterEmployeesWithSameTime(employees: Map<Int, List<Employee>>): Map<Int, L
         }
     }.filterValues { it.isNotEmpty() }
 }
-
-data class EmployeesPair(
-    val employee1: Employee,
-    val employee2: Employee,
-    val overlappingDays: Long
-)
-
 
 fun formatResult(pair: EmployeesPair?): String {
     if (pair == null) return "there are no employees with overlapping time"

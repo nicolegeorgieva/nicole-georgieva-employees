@@ -1,6 +1,6 @@
 package com.employees.domain
 
-import com.file.Employee
+import com.employees.domain.data.Employee
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 

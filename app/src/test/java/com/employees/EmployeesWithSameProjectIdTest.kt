@@ -1,8 +1,8 @@
 package com.employees
 
+import com.employees.domain.data.Employee
 import com.employees.domain.employeesWithSameProjectId
 import com.employees.domain.findEmployeesWithSameProjectId
-import com.file.Employee
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate

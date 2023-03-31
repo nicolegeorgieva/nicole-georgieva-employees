@@ -1,10 +1,10 @@
 package com.employees
 
+import com.employees.domain.data.Employee
 import com.employees.domain.extractCsvRows
 import com.employees.domain.parseCsv
 import com.employees.domain.parseDate
 import com.employees.domain.parseRow
-import com.file.Employee
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
