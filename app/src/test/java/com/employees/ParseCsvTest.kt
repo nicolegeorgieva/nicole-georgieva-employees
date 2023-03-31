@@ -17,7 +17,7 @@ import java.time.Month
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ParseCsv : FreeSpec({
+class ParseCsvTest : FreeSpec({
     "parse Csv" - {
         "parseCsv should return empty list when input is null" {
             val result = parseCsv(null)
