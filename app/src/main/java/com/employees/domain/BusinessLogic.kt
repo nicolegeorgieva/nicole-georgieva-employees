@@ -43,17 +43,28 @@ fun filterEmployeesWithSameTime(employees: Map<Int, List<Employee>>): Map<Int, L
     }.filterValues { it.isNotEmpty() }
 }
 
-data class EmployeePair(val employee1: Employee, val employee2: Employee, val overlappingDays: Long)
+data class EmployeesPair(
+    val employee1: Employee,
+    val employee2: Employee,
+    val overlappingDays: Long
+)
+
+
+fun formatResult(pair: EmployeesPair?): String {
+    if (pair == null) return "there are no employees with overlapping time"
+    return "${pair.employee1.empId}, ${pair.employee2.empId}, ${pair.overlappingDays}"
+}
+
 
 /**
  * Returns the pair of employees that have worked on the same project for the longest time.
  * If there are multiple pairs with the same longest time, return any of them.
  * If there are no employees with overlapping time, return null.
  */
-fun longestWorkingPair(fileContent: String): EmployeePair? {
+fun longestWorkingPair(fileContent: String): EmployeesPair? {
     val sameProjectAndTimeEmployees = employeesWithSameProjectAndTime(fileContent)
     var maxOverlap: Long = 0
-    var longestPair: EmployeePair? = null
+    var longestPair: EmployeesPair? = null
 
     for ((_, employees) in sameProjectAndTimeEmployees) {
         for (i in employees.indices) {
@@ -61,7 +72,7 @@ fun longestWorkingPair(fileContent: String): EmployeePair? {
                 val overlap = overlappingDays(employees[i], employees[j])
                 if (overlap > maxOverlap) {
                     maxOverlap = overlap
-                    longestPair = EmployeePair(employees[i], employees[j], maxOverlap)
+                    longestPair = EmployeesPair(employees[i], employees[j], maxOverlap)
                 }
             }
         }

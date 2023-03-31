@@ -3,6 +3,7 @@ package com.employees.screen.main
 import android.annotation.SuppressLint
 import android.content.Context
 import com.employees.base.FlowViewModel
+import com.employees.domain.formatResult
 import com.employees.domain.longestWorkingPair
 import com.file.readFile
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,7 +42,9 @@ class MainViewModel @Inject constructor(
                 val fileString = readFile(context, event.file)
 
                 fileContent.value = fileString
-                result.value = "Result: ${longestWorkingPair(fileString ?: "")}"
+                val employeesPair = longestWorkingPair(fileString ?: "")
+
+                result.value = "Result: ${formatResult(employeesPair)}"
             }
         }
     }

@@ -41,7 +41,7 @@ private fun UI(
                 onEvent(MainEvent.FilePicked(file = it))
             }
         }) {
-            Text(text = "Export CSV*")
+            Text(text = "Import CSV*")
         }
 
         Spacer(modifier = Modifier.height(24.dp))
