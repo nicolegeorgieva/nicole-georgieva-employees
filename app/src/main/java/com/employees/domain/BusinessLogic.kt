@@ -8,7 +8,7 @@ fun findEmployeesWithSameProjectId(employees: List<Employee?>): Map<Int, List<Em
         .filter { (_, employeesInProject) -> employeesInProject.size > 1 }
 }
 
-val employeesWithSameProjectId = findEmployeesWithSameProjectId(listOfEmployees)
+val employeesWithSameProjectId = findEmployeesWithSameProjectId(parseCsv(csv))
 
 fun main() {
     println(employeesWithSameProjectId)
