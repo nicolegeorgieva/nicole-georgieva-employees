@@ -69,6 +69,7 @@ private fun UI(
         if (state.result != null) {
             ResultText(label = "Employee 1 ID:", value = state.result.employee1.empId)
             ResultText(label = "Employee 2 ID:", value = state.result.employee2.empId)
+            ResultText(label = "Project ID:", value = state.result.projectId)
             ResultText(label = "Overlapping days:", value = state.result.overlappingDays.toInt())
         } else if (state.fileImported) {
             Text(

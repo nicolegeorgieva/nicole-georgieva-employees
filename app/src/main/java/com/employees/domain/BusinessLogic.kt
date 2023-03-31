@@ -54,13 +54,13 @@ fun longestWorkingPair(fileContent: String): EmployeesPair? {
     var maxOverlap: Long = 0
     var longestPair: EmployeesPair? = null
 
-    for ((_, employees) in sameProjectAndTimeEmployees) {
+    for ((projectId, employees) in sameProjectAndTimeEmployees) {
         for (i in employees.indices) {
             for (j in i + 1 until employees.size) {
                 val overlap = overlappingDays(employees[i], employees[j])
                 if (overlap > maxOverlap) {
                     maxOverlap = overlap
-                    longestPair = EmployeesPair(employees[i], employees[j], maxOverlap)
+                    longestPair = EmployeesPair(employees[i], employees[j], projectId, maxOverlap)
                 }
             }
         }

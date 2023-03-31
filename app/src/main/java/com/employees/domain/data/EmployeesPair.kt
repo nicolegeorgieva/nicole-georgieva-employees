@@ -6,5 +6,6 @@ package com.employees.domain.data
 data class EmployeesPair(
     val employee1: Employee,
     val employee2: Employee,
+    val projectId: Int,
     val overlappingDays: Long
 )
