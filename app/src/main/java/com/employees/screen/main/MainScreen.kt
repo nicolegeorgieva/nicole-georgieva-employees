@@ -1,8 +1,10 @@
 package com.employees.screen.main
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,74 +32,121 @@ private fun UI(
     state: MainState,
     onEvent: (MainEvent) -> Unit
 ) {
-    Column(
+    val mainActivity = LocalContext.current as MainActivity
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val mainActivity = LocalContext.current as MainActivity
+        item(key = "welcome message") {
+            Text(text = "Welcome to Employees!", style = MaterialTheme.typography.headlineMedium)
 
-        Text(text = "Welcome to Employees!", style = MaterialTheme.typography.headlineMedium)
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            onClick = {
-                mainActivity.fileChooser {
-                    onEvent(MainEvent.FilePicked(file = it))
-                }
-            },
-            shape = RoundedCornerShape(50),
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Text(text = "Import CSV*")
+            Spacer(modifier = Modifier.height(24.dp))
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        item(key = "import csv button") {
+            Button(
+                onClick = {
+                    mainActivity.fileChooser {
+                        onEvent(MainEvent.FilePicked(file = it))
+                    }
+                },
+                shape = RoundedCornerShape(50),
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text(text = "Import CSV*")
+            }
 
-        Text(
-            text = "* to see pair of employees who have worked together for the" +
-                    " longest period of time",
-            textAlign = TextAlign.Left,
-            style = MaterialTheme.typography.bodyMedium
-        )
+            Spacer(modifier = Modifier.height(24.dp))
+        }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        if (state.result != null) {
-            ResultText(label = "Employee 1 ID:", value = state.result.employee1.empId)
-            ResultText(label = "Employee 2 ID:", value = state.result.employee2.empId)
-            ResultText(label = "Project ID:", value = state.result.projectId)
-            ResultText(label = "Overlapping days:", value = state.result.overlappingDays.toInt())
-        } else if (state.fileImported) {
+        item(key = "explanation text") {
             Text(
-                text = "There isn't a result matching the criteria.",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.error,
-                textAlign = TextAlign.Center
+                text = "* to see pair of employees who have worked together on the same project" +
+                        " for the longest period of time.",
+                textAlign = TextAlign.Left,
+                style = MaterialTheme.typography.bodyMedium
             )
+
+            Spacer(modifier = Modifier.height(32.dp))
+        }
+
+        item(key = "result") {
+            if (state.result != null) {
+                Divider(
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outline
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #1")
+                    GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #2")
+                    GridTitle(modifier = Modifier.weight(1f), label = "Project ID")
+                    GridTitle(modifier = Modifier.weight(1f), label = "Days worked")
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Divider(
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outline
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    ResultText(modifier = Modifier.weight(1f), value = state.result.employee1.empId)
+                    ResultText(modifier = Modifier.weight(1f), value = state.result.employee2.empId)
+                    ResultText(modifier = Modifier.weight(1f), value = state.result.projectId)
+                    ResultText(
+                        modifier = Modifier.weight(1f),
+                        value = state.result.overlappingDays.toInt()
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Divider(
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outline
+                )
+            } else if (state.fileImported) {
+                Text(
+                    text = "There isn't a result matching the criteria.",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
 
 @Composable
-fun ResultText(label: String, value: Int) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground
-        )
+fun GridTitle(modifier: Modifier, label: String) {
+    Text(
+        modifier = modifier,
+        text = label,
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onBackground
+    )
+}
 
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Text(
-            text = value.toString(),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold
-        )
-    }
+@Composable
+fun ResultText(modifier: Modifier, value: Int) {
+    Text(
+        modifier = modifier,
+        text = value.toString(),
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.primary,
+        fontWeight = FontWeight.Bold
+    )
 }
