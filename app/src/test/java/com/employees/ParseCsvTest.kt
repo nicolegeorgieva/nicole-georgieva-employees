@@ -18,18 +18,18 @@ import java.time.Month
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ParseCsvTest : FreeSpec({
-    "parse Csv" - {
-        "parseCsv should return empty list when input is null" {
+    "parseCsv" - {
+        "null input" {
             val result = parseCsv(null)
             result.shouldBeEmpty()
         }
 
-        "parseCsv should return a list of Employee objects for valid input" {
+        "valid input" {
             val csv = """
-            empId,projectId,dateFrom,dateTo
-            1,233,2013-11-01,2014-01-05
-            2,345,2013-11-01,2014-01-05
-        """.trimIndent()
+        empId,projectId,dateFrom,dateTo
+        1,233,2013-11-01,2014-01-05
+        2,345,2013-11-01,2014-01-05
+    """.trimIndent()
 
             val expectedResult = listOf(
                 Employee(
@@ -46,20 +46,20 @@ class ParseCsvTest : FreeSpec({
             result.shouldContainExactly(expectedResult)
         }
 
-        "parseCsv should handle empty input correctly" {
+        "empty input" {
             val csv = ""
             val result = parseCsv(csv)
             result.shouldBeEmpty()
         }
     }
 
-    "Extract Csv rows" - {
-        "extractCsvRows should return a list of rows from the csv string, excluding the header row" {
+    "extractCsvRows" - {
+        "exclude header row" {
             val csv = """
-            empId,projectId,dateFrom,dateTo
-            1,233,2013-11-01,2014-01-05
-            2,345,2013-11-01,2014-01-05
-        """.trimIndent()
+        empId,projectId,dateFrom,dateTo
+        1,233,2013-11-01,2014-01-05
+        2,345,2013-11-01,2014-01-05
+    """.trimIndent()
 
             val expectedResult = listOf(
                 "1,233,2013-11-01,2014-01-05",
@@ -71,8 +71,8 @@ class ParseCsvTest : FreeSpec({
         }
     }
 
-    "Parse Row" - {
-        "parseRow should return an Employee object for a valid row of the form: empId,projectId,dateFrom,dateTo" {
+    "parseRow" - {
+        "valid row" {
             val row = "1,233,2013-11-01,2014-01-05"
             val expectedResult = Employee(
                 1, 233, LocalDate.of(2013, Month.NOVEMBER.value, 1),
@@ -84,8 +84,8 @@ class ParseCsvTest : FreeSpec({
         }
     }
 
-    "Parse Date" - {
-        "parseDate should return a LocalDate object for a valid date string of the form: yyyy-MM-dd" {
+    "parseDate" - {
+        "valid date string" {
             val date = "2013-11-01"
             val expectedResult = LocalDate.of(2013, Month.NOVEMBER.value, 1)
 
