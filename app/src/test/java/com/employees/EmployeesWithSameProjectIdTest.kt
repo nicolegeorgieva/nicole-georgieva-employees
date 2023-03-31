@@ -10,11 +10,11 @@ import java.time.Month
 
 class EmployeesWithSameProjectIdTest : FreeSpec({
     "findEmployeesWithSameProjectId" - {
-        "for empty list should return empty map" {
+        "empty list" {
             findEmployeesWithSameProjectId(emptyList()).shouldBe(emptyMap())
         }
 
-        "for list with one employee should return empty map" {
+        "one employee" {
             findEmployeesWithSameProjectId(
                 listOf(
                     Employee(
@@ -25,7 +25,7 @@ class EmployeesWithSameProjectIdTest : FreeSpec({
             ).shouldBe(emptyMap())
         }
 
-        "for list with two employees with different project ids should return empty map" {
+        "two employees, different project ids" {
             findEmployeesWithSameProjectId(
                 listOf(
                     Employee(
@@ -40,7 +40,7 @@ class EmployeesWithSameProjectIdTest : FreeSpec({
             ).shouldBe(emptyMap())
         }
 
-        "for list with two employees with same project ids should return map with one entry" {
+        "two employees, same project ids" {
             findEmployeesWithSameProjectId(
                 listOf(
                     Employee(
@@ -68,7 +68,7 @@ class EmployeesWithSameProjectIdTest : FreeSpec({
             )
         }
 
-        "for list with two employees with same project ids and one employee with different project id should return map with one entry" {
+        "two same, one different project id" {
             findEmployeesWithSameProjectId(
                 listOf(
                     Employee(
@@ -100,7 +100,7 @@ class EmployeesWithSameProjectIdTest : FreeSpec({
             )
         }
 
-        "for list with three employees with same project ids should return map with one entry" {
+        "three employees, same project ids" {
             findEmployeesWithSameProjectId(
                 listOf(
                     Employee(
@@ -138,36 +138,36 @@ class EmployeesWithSameProjectIdTest : FreeSpec({
     }
 
     "employeesWithSameProjectId" - {
-        "for empty file should return empty map" {
+        "empty file" {
             employeesWithSameProjectId("").shouldBe(emptyMap())
         }
 
-        "for file with one employee should return empty map" {
+        "one employee file" {
             employeesWithSameProjectId(
                 """
-                    empId,projectId,dateFrom,dateTo
-                1,1,2020-04-20,2022-04-20
-                """.trimIndent()
+                empId,projectId,dateFrom,dateTo
+            1,1,2020-04-20,2022-04-20
+            """.trimIndent()
             ).shouldBe(emptyMap())
         }
 
-        "for file with two employees with different project ids should return empty map" {
+        "two employees, different project ids" {
             employeesWithSameProjectId(
                 """
-                    empId,projectId,dateFrom,dateTo
-                1,1,2020-04-20,2022-04-20
-                2,2,2020-04-20,2022-04-20
-                """.trimIndent()
+                empId,projectId,dateFrom,dateTo
+            1,1,2020-04-20,2022-04-20
+            2,2,2020-04-20,2022-04-20
+            """.trimIndent()
             ).shouldBe(emptyMap())
         }
 
-        "for file with two employees with same project ids should return map with one entry" {
+        "two employees, same project ids" {
             employeesWithSameProjectId(
                 """
-                    empId,projectId,dateFrom,dateTo
-                1,1,2020-04-20,2022-04-20
-                2,1,2020-04-20,2022-04-20
-                """.trimIndent()
+                empId,projectId,dateFrom,dateTo
+            1,1,2020-04-20,2022-04-20
+            2,1,2020-04-20,2022-04-20
+            """.trimIndent()
             ).shouldBe(
                 mapOf(
                     1 to listOf(
@@ -184,29 +184,28 @@ class EmployeesWithSameProjectIdTest : FreeSpec({
             )
         }
 
-        "for file with two employees with same project ids and one employee with different project id" +
-                "should return map with one entry" {
-                    employeesWithSameProjectId(
-                        """
-                            empId,projectId,dateFrom,dateTo
-                1,1,2020-04-20,2022-04-20
-                2,1,2020-04-20,2022-04-20
-                3,2,2020-04-20,2022-04-20
-                """.trimIndent()
-                    ).shouldBe(
-                        mapOf(
-                            1 to listOf(
-                                Employee(
-                                    1, 1, LocalDate.of(2020, Month.APRIL, 20),
-                                    LocalDate.of(2022, Month.APRIL, 20)
-                                ),
-                                Employee(
-                                    2, 1, LocalDate.of(2020, Month.APRIL, 20),
-                                    LocalDate.of(2022, Month.APRIL, 20)
-                                )
-                            )
+        "two same, one different project id" {
+            employeesWithSameProjectId(
+                """
+                empId,projectId,dateFrom,dateTo
+            1,1,2020-04-20,2022-04-20
+            2,1,2020-04-20,2022-04-20
+            3,2,2020-04-20,2022-04-20
+            """.trimIndent()
+            ).shouldBe(
+                mapOf(
+                    1 to listOf(
+                        Employee(
+                            1, 1, LocalDate.of(2020, Month.APRIL, 20),
+                            LocalDate.of(2022, Month.APRIL, 20)
+                        ),
+                        Employee(
+                            2, 1, LocalDate.of(2020, Month.APRIL, 20),
+                            LocalDate.of(2022, Month.APRIL, 20)
                         )
                     )
-                }
+                )
+            )
+        }
     }
 })
