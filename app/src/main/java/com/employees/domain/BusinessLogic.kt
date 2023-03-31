@@ -44,11 +44,6 @@ fun filterEmployeesWithSameTime(employees: Map<Int, List<Employee>>): Map<Int, L
     }.filterValues { it.isNotEmpty() }
 }
 
-fun formatResult(pair: EmployeesPair?): String {
-    if (pair == null) return "There isn't a result matching the criteria"
-    return "${pair.employee1.empId}, ${pair.employee2.empId}, ${pair.overlappingDays}"
-}
-
 /**
  * Returns the pair of employees that have worked on the same project for the longest time.
  * If there are multiple pairs with the same longest time, return any of them.

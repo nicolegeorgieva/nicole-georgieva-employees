@@ -67,13 +67,36 @@ private fun UI(
         Spacer(modifier = Modifier.height(24.dp))
 
         if (state.result != null) {
+            ResultText(label = "Employee 1 ID:", value = state.result.employee1.empId)
+            ResultText(label = "Employee 2 ID:", value = state.result.employee2.empId)
+            ResultText(label = "Overlapping days:", value = state.result.overlappingDays.toInt())
+        } else if (state.fileImported) {
             Text(
-                text = "${state.result}",
+                text = "There isn't a result matching the criteria.",
                 style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center
             )
         }
+    }
+}
+
+@Composable
+fun ResultText(label: String, value: Int) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = value.toString(),
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
