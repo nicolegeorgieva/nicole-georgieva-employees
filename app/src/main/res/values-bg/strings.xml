@@ -3,7 +3,7 @@
     <string name="welcome_title">Добре дошли в "Служители"!</string>
     <string name="explanation_text">* за да видите двойка служители, които са работили заедно по общи проекти
         за най-дълъг период от време.</string>
-    <string name="import_csv_btn">Избери CSV*</string>
+    <string name="import_csv_btn">Изберете CSV*</string>
     <string name="no_result_text">Няма резултат, отговарящ на критериите.</string>
     <string name="label_employee_1">Служител ID #1</string>
     <string name="label_employee_2">Служител ID #2</string>
