@@ -9,7 +9,7 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 
-class EmployeeFunctionsTest : FreeSpec({
+class BusinessLogicTest : FreeSpec({
     "calculateOverlappingDuration should return correct overlapping days" {
         val date1From = LocalDate.of(2021, 1, 1)
         val date1To = LocalDate.of(2021, 1, 10)

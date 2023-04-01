@@ -14,11 +14,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.employees.MainActivity
+import com.employees.R
 import com.employees.domain.data.TaskResult
 
 @Composable
@@ -44,7 +46,10 @@ private fun UI(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item(key = "welcome message") {
-            Text(text = "Welcome to Employees!", style = MaterialTheme.typography.headlineMedium)
+            Text(
+                text = stringResource(R.string.welcome_title),
+                style = MaterialTheme.typography.headlineMedium
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -59,7 +64,7 @@ private fun UI(
                 shape = RoundedCornerShape(50),
                 modifier = Modifier.padding(8.dp)
             ) {
-                Text(text = "Import CSV*")
+                Text(text = stringResource(R.string.import_csv_btn))
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -67,8 +72,7 @@ private fun UI(
 
         item(key = "explanation text") {
             Text(
-                text = "* to see pair of employees who have worked together on common projects" +
-                        " for the longest period of time.",
+                text = stringResource(R.string.explanation_text),
                 textAlign = TextAlign.Left,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -90,7 +94,7 @@ private fun UI(
         } else if (state.fileImported) {
             item(key = "no-result") {
                 Text(
-                    text = "There isn't a result matching the criteria.",
+                    text = stringResource(R.string.no_result_text),
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.error,
                     textAlign = TextAlign.Center
@@ -108,10 +112,13 @@ fun ResultGridHeader() {
             .background(MaterialTheme.colorScheme.secondary)
             .padding(vertical = 8.dp, horizontal = 8.dp)
     ) {
-        GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #1")
-        GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #2")
-        GridTitle(modifier = Modifier.weight(1f), label = "Project ID")
-        GridTitle(modifier = Modifier.weight(1f), label = "Days worked")
+        GridTitle(modifier = Modifier.weight(1f), label = stringResource(R.string.label_employee_1))
+        GridTitle(modifier = Modifier.weight(1f), label = stringResource(R.string.label_employee_2))
+        GridTitle(modifier = Modifier.weight(1f), label = stringResource(R.string.label_project_id))
+        GridTitle(
+            modifier = Modifier.weight(1f),
+            label = stringResource(R.string.label_days_worked)
+        )
     }
 }
 
@@ -121,9 +128,9 @@ fun ResultRow(result: TaskResult, index: Int) {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                if (index % 2 == 0) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.onSurface.copy(
-                    alpha = 0.05f
-                )
+                if (index % 2 == 0) {
+                    MaterialTheme.colorScheme.surface
+                } else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f)
             )
             .padding(vertical = 8.dp, horizontal = 8.dp)
     ) {

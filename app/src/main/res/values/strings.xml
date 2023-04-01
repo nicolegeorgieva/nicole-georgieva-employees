@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Employees</string>
+    <string name="welcome_title">Welcome to Employees!</string>
+    <string name="explanation_text">* to see pair of employees who have worked together on common projects for the longest period of time.</string>
+    <string name="import_csv_btn">Import CSV*</string>
+    <string name="no_result_text">There isn\'t a result matching the criteria.</string>
+    <string name="label_employee_1">Employee ID #1</string>
+    <string name="label_employee_2">Employee ID #2</string>
+    <string name="label_project_id">Project ID</string>
+    <string name="label_days_worked">Days worked</string>
 </resources>
