@@ -106,7 +106,7 @@ fun ResultGridHeader() {
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.secondary)
-            .padding(vertical = 8.dp)
+            .padding(vertical = 8.dp, horizontal = 8.dp)
     ) {
         GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #1")
         GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #2")
@@ -125,7 +125,7 @@ fun ResultRow(result: TaskResult, index: Int) {
                     alpha = 0.05f
                 )
             )
-            .padding(vertical = 8.dp)
+            .padding(vertical = 8.dp, horizontal = 8.dp)
     ) {
         ResultText(modifier = Modifier.weight(1f), value = result.employee1Id.toString())
         ResultText(modifier = Modifier.weight(1f), value = result.employee2Id.toString())
