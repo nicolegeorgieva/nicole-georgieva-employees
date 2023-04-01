@@ -1,5 +1,6 @@
 package com.employees.screen.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -98,19 +99,31 @@ private fun UI(
 
 @Composable
 fun ResultGridHeader() {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.secondary)
+            .padding(vertical = 8.dp)
+    ) {
         GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #1")
         GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #2")
         GridTitle(modifier = Modifier.weight(1f), label = "Project ID")
         GridTitle(modifier = Modifier.weight(1f), label = "Days worked")
     }
-
-    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable
 fun ResultRow(result: TaskResult, index: Int) {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                if (index % 2 == 0) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.onSurface.copy(
+                    alpha = 0.05f
+                )
+            )
+            .padding(vertical = 8.dp)
+    ) {
         ResultText(modifier = Modifier.weight(1f), value = result.employee1Id.toString())
         ResultText(modifier = Modifier.weight(1f), value = result.employee2Id.toString())
         ResultText(
@@ -122,8 +135,6 @@ fun ResultRow(result: TaskResult, index: Int) {
             value = result.daysWorked[index].toString()
         )
     }
-
-    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable
@@ -132,7 +143,7 @@ fun GridTitle(modifier: Modifier, label: String) {
         modifier = modifier,
         text = label,
         style = MaterialTheme.typography.labelMedium,
-        color = MaterialTheme.colorScheme.onBackground
+        color = MaterialTheme.colorScheme.onSecondary
     )
 }
 
