@@ -81,7 +81,10 @@ private fun UI(
                 ResultGridHeader()
             }
 
-            itemsIndexed(state.result.commonProjects, key = { index, _ -> index }) { index, _ ->
+            itemsIndexed(
+                state.result.commonProjects,
+                key = { index, _ -> index }
+            ) { index, _ ->
                 ResultRow(result = state.result, index = index)
             }
         } else if (state.fileImported) {
