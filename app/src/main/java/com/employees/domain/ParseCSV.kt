@@ -2,6 +2,7 @@ package com.employees.domain
 
 import com.employees.domain.data.Employee
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
 /**
@@ -45,13 +46,39 @@ fun parseRow(row: String): Employee? {
 }
 
 /**
- * Returns a LocalDate object for a valid date string of the form: yyyy-MM-dd
+ *Parses a date string into a [LocalDate] object by attempting to match the input string
+ *with a list of predefined date formats.
+ *
+ *@param dateString The date string to be parsed.
+ *@return A [LocalDate] object if the input string matches one of the predefined date formats,
+ * or **null** if no matching format is found.
  */
-fun parseDate(date: String): LocalDate? {
-    return try {
-        LocalDate.parse(date)
-    } catch (e: DateTimeParseException) {
-        null
+fun parseDate(dateString: String): LocalDate? {
+    val dateFormats = listOf(
+        "yyyy-MM-dd",
+        "dd-MM-yyyy",
+        "MM/dd/yyyy",
+        "yyyy/MM/dd",
+        "dd/MM/yyyy",
+        "yyyyMMdd",
+        "ddMMyyyy",
+        "yyyy-M-d",
+        "d-M-yyyy",
+        "M/d/yyyy",
+        "yyyy/M/d",
+        "d/M/yyyy",
+        "dd.MM.yyyy",
+        "yyyy.MM.dd"
+    )
+
+    for (format in dateFormats) {
+        try {
+            return LocalDate.parse(dateString, DateTimeFormatter.ofPattern(format))
+        } catch (e: DateTimeParseException) {
+            // Ignore and try the next format
+        }
     }
+
+    return null // Return null if no matching format is found
 }
 
