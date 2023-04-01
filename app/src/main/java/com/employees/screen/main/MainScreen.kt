@@ -2,9 +2,9 @@ package com.employees.screen.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -75,10 +75,16 @@ private fun UI(
             Spacer(modifier = Modifier.height(32.dp))
         }
 
-        item(key = "result") {
-            if (state.result != null) {
-                ResultGrid(result = state.result)
-            } else if (state.fileImported) {
+        if (state.result != null) {
+            item(key = "header") {
+                ResultGridHeader()
+            }
+
+            itemsIndexed(state.result.commonProjects, key = { index, _ -> index }) { index, _ ->
+                ResultRow(result = state.result, index = index)
+            }
+        } else if (state.fileImported) {
+            item(key = "no-result") {
                 Text(
                     text = "There isn't a result matching the criteria.",
                     style = MaterialTheme.typography.headlineSmall,
@@ -91,52 +97,33 @@ private fun UI(
 }
 
 @Composable
-fun ResultGrid(result: TaskResult) {
-    Divider(
-        modifier = Modifier.fillMaxWidth(),
-        thickness = 0.5.dp,
-        color = MaterialTheme.colorScheme.outline
-    )
-
-    Spacer(modifier = Modifier.height(8.dp))
-
+fun ResultGridHeader() {
     Row(modifier = Modifier.fillMaxWidth()) {
         GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #1")
         GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #2")
-        GridTitle(modifier = Modifier.weight(1f), label = "Project IDs")
+        GridTitle(modifier = Modifier.weight(1f), label = "Project ID")
         GridTitle(modifier = Modifier.weight(1f), label = "Days worked")
     }
 
     Spacer(modifier = Modifier.height(8.dp))
+}
 
-    Divider(
-        modifier = Modifier.fillMaxWidth(),
-        thickness = 0.5.dp,
-        color = MaterialTheme.colorScheme.outline
-    )
-
-    Spacer(modifier = Modifier.height(8.dp))
-
+@Composable
+fun ResultRow(result: TaskResult, index: Int) {
     Row(modifier = Modifier.fillMaxWidth()) {
         ResultText(modifier = Modifier.weight(1f), value = result.employee1Id.toString())
         ResultText(modifier = Modifier.weight(1f), value = result.employee2Id.toString())
         ResultText(
             modifier = Modifier.weight(1f),
-            value = result.commonProjects.joinToString(separator = ", ")
+            value = result.commonProjects[index].toString()
         )
         ResultText(
             modifier = Modifier.weight(1f),
-            value = result.daysWorked.toString()
+            value = result.daysWorked[index].toString()
         )
     }
 
     Spacer(modifier = Modifier.height(8.dp))
-
-    Divider(
-        modifier = Modifier.fillMaxWidth(),
-        thickness = 0.5.dp,
-        color = MaterialTheme.colorScheme.outline
-    )
 }
 
 @Composable

@@ -4,5 +4,5 @@ data class TaskResult(
     val employee1Id: Int,
     val employee2Id: Int,
     val commonProjects: List<Int>,
-    val daysWorked: Long
+    val daysWorked: List<Long>
 )
