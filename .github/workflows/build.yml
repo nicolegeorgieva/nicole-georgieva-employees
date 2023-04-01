@@ -46,5 +46,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "Weight-Tracker-${{ steps.vars.outputs.sha_short }}.apk"
-          path: app/build/outputs/apk/demo/*.apk
+          path: app/build/outputs/apk/**/*.apk
       #------------------------------------------------------------------
