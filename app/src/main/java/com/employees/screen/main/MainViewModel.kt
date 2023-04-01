@@ -3,8 +3,9 @@ package com.employees.screen.main
 import android.annotation.SuppressLint
 import android.content.Context
 import com.employees.base.FlowViewModel
-import com.employees.domain.data.EmployeesPair
-import com.employees.domain.longestWorkingPair
+import com.employees.domain.data.TaskResult
+import com.employees.domain.longestWorkingTogetherEmployees
+import com.employees.domain.parseCsv
 import com.file.readFile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,7 +25,7 @@ class MainViewModel @Inject constructor(
     )
 
     private val fileImported = MutableStateFlow<Boolean>(false)
-    private val result = MutableStateFlow<EmployeesPair?>(null)
+    private val result = MutableStateFlow<TaskResult?>(null)
 
     override val uiFlow = combine(
         fileImported,
@@ -43,7 +44,8 @@ class MainViewModel @Inject constructor(
 
                 val fileString = readFile(context, event.file)
 
-                val employeesPair = longestWorkingPair(fileString ?: "")
+                val employeesPair =
+                    longestWorkingTogetherEmployees(parseCsv(fileString).filterNotNull())
 
                 result.value = employeesPair
             }

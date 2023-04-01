@@ -1,86 +1,101 @@
 package com.employees.domain
 
 import com.employees.domain.data.Employee
-import com.employees.domain.data.EmployeesPair
-import java.time.Duration
+import com.employees.domain.data.TaskResult
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
-/**
- * Returns a map of project ids to employees that are assigned to that project.
- * Only projects with more than one employee are included.
- */
-fun findEmployeesWithSameProjectId(employees: List<Employee?>): Map<Int, List<Employee>> {
-    return employees.filterNotNull()
-        .groupBy { it.projectId }
-        .filter { (_, employeesInProject) -> employeesInProject.size > 1 }
+//res should be 1 and 2
+
+fun main() {
+    val employees = listOf(
+        Employee(
+            1, 10, LocalDate.of(2019, 1, 1),
+            LocalDate.of(2019, 1, 14)
+        ),
+        Employee(
+            2, 10, LocalDate.of(2019, 1, 1),
+            LocalDate.of(2019, 1, 14)
+        ),
+        Employee(
+            3, 20, LocalDate.of(2019, 1, 10),
+            LocalDate.of(2019, 1, 28)
+        ),
+        Employee(
+            4, 20, LocalDate.of(2019, 1, 10),
+            LocalDate.of(2019, 1, 28)
+        ),
+        Employee(
+            1, 30, LocalDate.of(2019, 1, 20),
+            LocalDate.of(2019, 1, 28)
+        ),
+        Employee(
+            2, 30, LocalDate.of(2019, 1, 20),
+            LocalDate.of(2019, 1, 28)
+        ),
+    )
+
+    val result = longestWorkingTogetherEmployees(employees)
+    println(result)
 }
 
-/**
- * Implement findEmployeesWithSameProjectId using the provided parseCsv function.
- */
-fun employeesWithSameProjectId(fileContent: String): Map<Int, List<Employee>> {
-    return findEmployeesWithSameProjectId(parseCsv(fileContent))
-}
+fun longestWorkingTogetherEmployees(employees: List<Employee>): TaskResult? {
+    val projectGroups = employees.groupBy { it.projectId }
+    val pairDurations = mutableMapOf<Pair<Int, Int>, Long>()
 
-/**
- * Returns a map of project ids to employees that are assigned to that project and have overlapping time.
- * Only projects with more than one employee are included.
- */
-fun employeesWithSameProjectAndTime(fileContent: String): Map<Int, List<Employee>> {
-    return filterEmployeesWithSameTime(employeesWithSameProjectId(fileContent))
-}
-
-/**
- * Returns a map of project ids to employees that have overlapping time.
- * Only projects with more than one employee are included.
- */
-fun filterEmployeesWithSameTime(employees: Map<Int, List<Employee>>): Map<Int, List<Employee>> {
-    return employees.mapValues { (_, employeesList) ->
-        employeesList.filter { employee1 ->
-            employeesList.any { employee2 ->
-                employee1 != employee2 && employee1.dateFrom <= employee2.dateTo &&
-                        employee1.dateTo >= employee2.dateFrom
-            }
-        }
-    }.filterValues { it.isNotEmpty() }
-}
-
-/**
- * Returns the pair of employees that have worked on the same project for the longest time.
- * If there are multiple pairs with the same longest time, return any of them.
- * If there are no employees with overlapping time, return null.
- */
-fun longestWorkingPair(fileContent: String): EmployeesPair? {
-    val sameProjectAndTimeEmployees = employeesWithSameProjectAndTime(fileContent)
-    var maxOverlap: Long = 0
-    var longestPair: EmployeesPair? = null
-
-    for ((projectId, employees) in sameProjectAndTimeEmployees) {
-        for (i in employees.indices) {
-            for (j in i + 1 until employees.size) {
-                val overlap = overlappingDays(employees[i], employees[j])
-                if (overlap > maxOverlap) {
-                    maxOverlap = overlap
-                    longestPair = EmployeesPair(employees[i], employees[j], projectId, maxOverlap)
-                }
-            }
-        }
+    for ((_, group) in projectGroups) {
+        calculatePairDurations(group, pairDurations)
     }
 
-    return longestPair
-}
+    val longestWorkingPair = pairDurations.maxByOrNull { it.value }
 
-/**
- * Returns the number of days that the two employees have worked on the same project.
- * If the employees have no overlapping time, return 0.
- */
-fun overlappingDays(emp1: Employee, emp2: Employee): Long {
-    val start = maxOf(emp1.dateFrom, emp2.dateFrom)
-    val end = minOf(emp1.dateTo, emp2.dateTo)
+    return if (longestWorkingPair != null) {
+        val (emp1Id, emp2Id) = longestWorkingPair.key
+        val daysWorked = longestWorkingPair.value
+        val commonProjects = findCommonProjects(employees, emp1Id, emp2Id)
 
-    return if (start.isBefore(end) || start.isEqual(end)) {
-        Duration.between(start.atStartOfDay(), end.atStartOfDay()).toDays()
+        TaskResult(emp1Id, emp2Id, commonProjects.toList(), daysWorked)
     } else {
-        0
+        null
     }
+}
+
+fun calculatePairDurations(group: List<Employee>, pairDurations: MutableMap<Pair<Int, Int>, Long>) {
+    for (i in group.indices) {
+        for (j in i + 1 until group.size) {
+            val emp1 = group[i]
+            val emp2 = group[j]
+
+            val overlappingDuration = calculateOverlappingDuration(
+                emp1.dateFrom, emp1.dateTo,
+                emp2.dateFrom, emp2.dateTo
+            )
+            if (overlappingDuration > 0) {
+                val pair = emp1.empId to emp2.empId
+                pairDurations[pair] = pairDurations.getOrDefault(pair, 0) +
+                        overlappingDuration
+            }
+        }
+    }
+}
+
+fun findCommonProjects(employees: List<Employee>, emp1Id: Int, emp2Id: Int): Set<Int> {
+    return employees
+        .filter { it.empId == emp1Id || it.empId == emp2Id }
+        .groupBy { it.projectId }
+        .filter { it.value.size > 1 }
+        .keys
+}
+
+fun calculateOverlappingDuration(
+    date1From: LocalDate, date1To: LocalDate, date2From: LocalDate,
+    date2To: LocalDate
+): Long {
+    val start = maxOf(date1From, date2From)
+    val end = minOf(date1To, date2To)
+    return if (start.isBefore(end) || start.isEqual(end)) ChronoUnit.DAYS.between(
+        start,
+        end
+    ) + 1 else 0
 }
 

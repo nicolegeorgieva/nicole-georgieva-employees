@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.employees.MainActivity
-import com.employees.domain.data.EmployeesPair
+import com.employees.domain.data.TaskResult
 
 @Composable
 fun MainScreen() {
@@ -91,7 +91,7 @@ private fun UI(
 }
 
 @Composable
-fun ResultGrid(result: EmployeesPair) {
+fun ResultGrid(result: TaskResult) {
     Divider(
         modifier = Modifier.fillMaxWidth(),
         thickness = 0.5.dp,
@@ -103,7 +103,7 @@ fun ResultGrid(result: EmployeesPair) {
     Row(modifier = Modifier.fillMaxWidth()) {
         GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #1")
         GridTitle(modifier = Modifier.weight(1f), label = "Employee ID #2")
-        GridTitle(modifier = Modifier.weight(1f), label = "Project ID")
+        GridTitle(modifier = Modifier.weight(1f), label = "Project IDs")
         GridTitle(modifier = Modifier.weight(1f), label = "Days worked")
     }
 
@@ -118,12 +118,15 @@ fun ResultGrid(result: EmployeesPair) {
     Spacer(modifier = Modifier.height(8.dp))
 
     Row(modifier = Modifier.fillMaxWidth()) {
-        ResultText(modifier = Modifier.weight(1f), value = result.employee1.empId)
-        ResultText(modifier = Modifier.weight(1f), value = result.employee2.empId)
-        ResultText(modifier = Modifier.weight(1f), value = result.projectId)
+        ResultText(modifier = Modifier.weight(1f), value = result.employee1Id.toString())
+        ResultText(modifier = Modifier.weight(1f), value = result.employee2Id.toString())
         ResultText(
             modifier = Modifier.weight(1f),
-            value = result.overlappingDays.toInt()
+            value = result.commonProjects.joinToString(separator = ", ")
+        )
+        ResultText(
+            modifier = Modifier.weight(1f),
+            value = result.daysWorked.toString()
         )
     }
 
@@ -147,10 +150,10 @@ fun GridTitle(modifier: Modifier, label: String) {
 }
 
 @Composable
-fun ResultText(modifier: Modifier, value: Int) {
+fun ResultText(modifier: Modifier, value: String) {
     Text(
         modifier = modifier,
-        text = value.toString(),
+        text = value,
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.primary,
         fontWeight = FontWeight.Bold

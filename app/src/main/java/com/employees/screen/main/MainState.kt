@@ -1,8 +1,8 @@
 package com.employees.screen.main
 
-import com.employees.domain.data.EmployeesPair
+import com.employees.domain.data.TaskResult
 
 data class MainState(
     val fileImported: Boolean,
-    val result: EmployeesPair?
+    val result: TaskResult?
 )
