@@ -5,6 +5,14 @@ import com.employees.domain.data.TaskResult
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
+/**
+ * Finds the pair of employees who have worked together on common projects
+ * for the longest period of time.
+ *
+ * @param employees A list of [Employee] objects.
+ * @return A [TaskResult] object containing the employee IDs, common project IDs, and days worked,
+ *         or null if no matching pair is found.
+ */
 fun longestWorkingTogetherEmployees(employees: List<Employee>): TaskResult? {
     val projectGroups = employees.groupBy { it.projectId }
     val pairProjects = mutableMapOf<Pair<Int, Int>, MutableList<Pair<Int, Long>>>()
@@ -27,6 +35,14 @@ fun longestWorkingTogetherEmployees(employees: List<Employee>): TaskResult? {
     }
 }
 
+/**
+ * Processes a list of employees working on a project and updates the pairProjects map with
+ * the project ID and overlapping days for each pair of employees.
+ *
+ * @param group A list of [Employee] objects working on the same project.
+ * @param pairProjects A mutable map containing pairs of employee IDs as keys and a list of
+ *                     project ID - overlapping days pairs as values.
+ */
 fun calculatePairProjects(
     group: List<Employee>,
     pairProjects: MutableMap<Pair<Int, Int>, MutableList<Pair<Int, Long>>>
@@ -48,6 +64,15 @@ fun calculatePairProjects(
     }
 }
 
+/**
+ * Calculates the overlapping days between two date ranges.
+ *
+ * @param date1From The start date of the first date range.
+ * @param date1To The end date of the first date range.
+ * @param date2From The start date of the second date range.
+ * @param date2To The end date of the second date range.
+ * @return The number of overlapping days between the two date ranges, or 0 if there is no overlap.
+ */
 fun calculateOverlappingDuration(
     date1From: LocalDate,
     date1To: LocalDate,
