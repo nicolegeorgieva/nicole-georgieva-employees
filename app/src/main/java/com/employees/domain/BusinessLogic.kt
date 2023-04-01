@@ -5,46 +5,6 @@ import com.employees.domain.data.TaskResult
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-fun main() {
-    val employees = listOf(
-        Employee(
-            1, 10, LocalDate.of(2019, 1, 1),
-            LocalDate.of(2019, 1, 14)
-        ),
-        Employee(
-            2, 10, LocalDate.of(2019, 1, 1),
-            LocalDate.of(2019, 1, 14)
-        ),
-        Employee(
-            3, 20, LocalDate.of(2019, 1, 10),
-            LocalDate.of(2019, 1, 28)
-        ),
-        Employee(
-            4, 20, LocalDate.of(2019, 1, 10),
-            LocalDate.of(2019, 1, 28)
-        ),
-        Employee(
-            1, 30, LocalDate.of(2019, 1, 20),
-            LocalDate.of(2019, 1, 28)
-        ),
-        Employee(
-            2, 30, LocalDate.of(2019, 1, 20),
-            LocalDate.of(2019, 1, 28)
-        ),
-        Employee(
-            1, 31, LocalDate.of(2019, 1, 20),
-            LocalDate.of(2019, 1, 28)
-        ),
-        Employee(
-            2, 31, LocalDate.of(2019, 1, 20),
-            LocalDate.of(2019, 1, 28)
-        ),
-    )
-
-    val result = longestWorkingTogetherEmployees(employees)
-    println(result)
-}
-
 fun longestWorkingTogetherEmployees(employees: List<Employee>): TaskResult? {
     val projectGroups = employees.groupBy { it.projectId }
     val pairProjects = mutableMapOf<Pair<Int, Int>, MutableList<Pair<Int, Long>>>()
