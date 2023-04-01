@@ -6,11 +6,13 @@ import com.employees.base.FlowViewModel
 import com.employees.domain.data.TaskResult
 import com.employees.domain.longestWorkingTogetherEmployees
 import com.employees.domain.parseCsv
-import com.file.readFile
+import com.employees.file.readFile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
@@ -40,14 +42,24 @@ class MainViewModel @Inject constructor(
     override suspend fun handleEvent(event: MainEvent) {
         when (event) {
             is MainEvent.FilePicked -> {
-                fileImported.value = true
+                try {
+                    val fileString = withContext(Dispatchers.IO) {
+                        // run it on an IO thread
+                        readFile(context, event.file)
+                    }
+                    fileImported.value = true
 
-                val fileString = readFile(context, event.file)
+                    val employeesPair = withContext(Dispatchers.Default) {
+                        // run it on a computational thread
+                        longestWorkingTogetherEmployees(
+                            parseCsv(fileString).filterNotNull()
+                        )
+                    }
 
-                val employeesPair =
-                    longestWorkingTogetherEmployees(parseCsv(fileString).filterNotNull())
-
-                result.value = employeesPair
+                    result.value = employeesPair
+                } catch (e: Exception) {
+                    fileImported.value = false
+                }
             }
         }
     }
