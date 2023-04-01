@@ -1,5 +1,14 @@
 # nicole-georgieva-employees
 
+## Download an APK and have a look at the app following the steps:
+_**Note:** You must be logged in GitHub._
+- Go to [**Actions**](https://github.com/nicolegeorgieva/nicole-georgieva-employees/actions) in the app repository.
+- Select [**Build APK**](https://github.com/nicolegeorgieva/nicole-georgieva-employees/actions/workflows/build.yml).
+- Open the latest commit.
+- Scroll to the bottom.
+- Click the apk file and download it.
+- Enjoy!
+
 ## Light theme:
 |          |             |                |       |
 | :---:    |    :----:   |          :---: | :---: |
