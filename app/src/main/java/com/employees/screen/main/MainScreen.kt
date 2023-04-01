@@ -66,7 +66,7 @@ private fun UI(
 
         item(key = "explanation text") {
             Text(
-                text = "* to see pair of employees who have worked together on the same project" +
+                text = "* to see pair of employees who have worked together on common projects" +
                         " for the longest period of time.",
                 textAlign = TextAlign.Left,
                 style = MaterialTheme.typography.bodyMedium
